@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { noMoreTen, hasAce, checkOver21, whoIsWin, checkOver21ForHidden } from "./functions_controller"
+import { noMoreTen, hasAce, checkOver21, whoIsWin, checkOver21ForHidden } from "../functions"
 
 export default class extends Controller{
 	connect(){
@@ -41,11 +41,15 @@ export default class extends Controller{
 			playCard = noMoreTen(playCard)
 			let currentNum = parseInt(playerTotal.innerText) + playCard
 			playerTotal.innerText = `${currentNum}`
-			if (hasAce(playCard)){
-				playerTotalWithAce.innerText = `${currentNum + 10}`
-				playerHiddenField.classList.remove('hidden')
+			if (playerTotal.innerText == playerTotalWithAce){
+				if (hasAce(playCard)){
+					playerTotalWithAce.innerText = `${currentNum + 10}`
+					playerHiddenField.classList.remove('hidden')
+				}else{
+					playerTotalWithAce.innerText = `${currentNum}`
+				}
 			}else{
-				playerTotalWithAce.innerText = `${currentNum}`
+				playerTotalWithAce.innerText = parseInt(playerTotalWithAce.innerText) + playCard
 			}
 			checkOver21(currentNum, resultField, "You Lose")
 			checkOver21ForHidden(playerTotalWithAce, playerHiddenField)
@@ -69,12 +73,17 @@ export default class extends Controller{
 				playCard = noMoreTen(playCard)
 				let currentNum = parseInt(dealerTotal.innerText) + playCard
 				dealerTotal.innerText = `${currentNum}`
-				if (hasAce(playCard)){
-					dealerTotalWithAce.innerText = `${currentNum + 10}`
-					dealerHiddenField.classList.remove('hidden')
+				if (dealerTotal.innerText == dealerTotalWithAce){
+					if (hasAce(playCard)){
+						dealerTotalWithAce.innerText = `${currentNum + 10}`
+						dealerHiddenField.classList.remove('hidden')
+					}else{
+						dealerTotalWithAce.innerText = `${currentNum}`
+					}
 				}else{
-					dealerTotalWithAce.innerText = `${currentNum}`
+					dealerTotalWithAce.innerText = parseInt(dealerTotalWithAce.innerText) + playCard
 				}
+				
 				await new Promise( resolve => { setTimeout( resolve, 2000 ) } )
 				checkOver21(currentNum, resultField, "You Win")
 				checkOver21ForHidden(dealerTotalWithAce, dealerHiddenField)
