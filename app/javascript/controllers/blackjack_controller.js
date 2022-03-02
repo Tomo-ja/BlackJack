@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { noMoreTen, hasAce, checkOver21, whoIsWin, checkOver21ForHidden } from "./functions"
+import { noMoreTen, hasAce, checkOver21, whoIsWin, checkOver21ForHidden } from "./functions_controller"
 
 export default class extends Controller{
 	connect(){
